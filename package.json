@@ -1,0 +1,25 @@
+{
+  "name": "ensighten-scraper",
+  "version": "1.0.0",
+  "description": "automate tag audits",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rajeev-Gill/ensighten-scraper.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "Rajeev Gill",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rajeev-Gill/ensighten-scraper/issues"
+  },
+  "homepage": "https://github.com/Rajeev-Gill/ensighten-scraper#readme",
+  "dependencies": {
+    "puppeteer": "^1.19.0"
+  }
+}
