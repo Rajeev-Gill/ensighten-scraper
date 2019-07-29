@@ -25,8 +25,8 @@ const SEARCH_FILTER_TEXTBOX = document.getElementById("searchFilterCheckboxSPACE
 const VISIBLE_NO_OF_TAGS = document.querySelectorAll(".label")[1].innerText.substring(4,6);
 const NO_OF_TAGS = document.querySelectorAll(".label")[1].innerText.substring(10,12);
 const CHANGE_NO_OF_TAGS_BTN = document.getElementById("select_1");
-const NO_OF_TAGS_SELECTORS = Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //O_OF_TAGS_SELECTORS[12] = Show 500 tags
-const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i] //Replace "i" with number to get tag
+const NO_OF_TAGS_SELECTORS = Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
+const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to get tag
 
 
 //"1 - 25 of 60" 12 chars
@@ -37,7 +37,7 @@ const TAGS_LANDING_PAGE = "https://manage.ensighten.com/tags";
 const SINGLE_TAG_PAGE = "https://manage.ensighten.com/tags/edit?id=IDNUM&spaceId=SPACENUM" //Replace IDNUM & SPACENUM with actual numbers where needed
 
 //Data object to store tag info
-let tags = {};
+let tags = [];
 
 //All etm spaces D5 and D6
 const SPACES = {
@@ -80,13 +80,31 @@ const SPACES = {
     }
 }
 
-//Functions
+//A fn to "construct" a new tag object
+function Tag(tagName, space, lastAction, status){
+    this.tagName = tagName;
+    this.space = space;
+    this.lastAction = lastAction;
+    this.status = status;
+}
+
+//Object to house private functions
 const func = {
+    //Gets tag info from TAG_AS_TABLE_ITEM and parses it into tags array
+    scrapeTagAsTableItem: (TagAsTableItem, callback) => { //Pass in TAG_AS_TABLE_ITEM[i]
+        let tagContentArray = Array.from(TagAsTableItem.children);
+        let tagName = tagContentArray[2].innerText;
+        let space = tagContentArray[3].innerText;
+        let lastAction = `As of ${new Date()} the last action was ${tagContentArray[4].innerText}`;
+        let status = tagContentArray[6].innerText;
 
+       //Construct a tag object with info from TAG_AS_TABLE_ITEM[i]
+       let newTag = new Tag(tagName, space, lastAction, status)
+       tags.push(newTag);
+    }
 }
-function getTags() {
 
-}
+//func.scrapeTagAsTableItem(TAG_AS_TABLE_ITEM[i]);
 
 //Main scraper
 async function runScraper() {

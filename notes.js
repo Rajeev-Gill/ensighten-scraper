@@ -56,3 +56,46 @@ Mandated by Space 'VW-NGW-Italy-Dealer-Media Tags'
 VWBasic_DealerFormSubmissionSuccess_Pageload
 ×"
 */
+
+/*
+
+using constructor to create tag objects
+
+*/
+
+const TAG_TABLE = document.querySelector(".md-body");
+
+const TAG_AS_TABLE_ITEM = TAG_TABLE.children[0];
+
+let tags = [];
+
+//Constructor function to "construct" each tag
+function Tag(tagName, space, lastAction, status){
+    this.tagName = tagName;
+    this.space = space;
+    this.lastAction = lastAction;
+    this.status = status;
+}
+
+const func = {
+    // CreateObj: (tagName, space, lastAction, status) => {
+    //     this.tagName = tagName;
+    //     this.space = space;
+    //     this.lastAction = lastAction;
+    //     this.status = status;
+    // },
+    scrapeTagAsTableItem: (TagAsTableItem) => { //Pass in TAG_AS_TABLE_ITEM[i]
+        let tagContentArray = Array.from(TagAsTableItem.children);
+        let tagName = tagContentArray[2].innerText;
+        let space = tagContentArray[3].innerText;
+        let lastAction = `As of ${new Date()} the last action was ${tagContentArray[4].innerText}`;
+        let status = tagContentArray[6].innerText;
+
+        //Execute callback and add obj to tags
+        let newTag = new Tag(tagName, space, lastAction, status)
+        tags.push(newTag);
+    }
+}
+
+func.scrapeTagAsTableItem(TAG_AS_TABLE_ITEM);
+
