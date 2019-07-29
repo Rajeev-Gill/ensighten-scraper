@@ -1,5 +1,6 @@
-.vscode/
-creds.js/
-creds-d6.js/
-scrape-etm.code-workspace/
+.vscode
+creds.js
+creds-d6.js
+scrape-etm.code-workspace
 .DS_Store
+node_modules
