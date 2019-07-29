@@ -6,3 +6,19 @@ Vendor specific tag setting iframe
 <iframe watch-height="" app-iframe-onload="onLoad" scrolling="no" frameborder="0" width="100%" height="100%"
     ng-src="apps/GoogleAds/index.html" class="ng-isolate-scope" src="apps/GoogleAds/index.html"
     style="height: 1006px;"></iframe>
+
+
+<!--
+
+Change Visible No. of tags button
+
+-->
+
+<md-select class="md-table-select ng-pristine ng-valid ng-not-empty ng-touched" ng-model="$pagination.limit"
+    md-container-class="md-pagination-select" ng-disabled="$pagination.disabled" aria-label="Rows: 25" placeholder="10"
+    role="listbox" aria-expanded="false" aria-multiselectable="false" id="select_1" aria-owns="select_container_2"
+    aria-disabled="false" tabindex="0" aria-invalid="false" style="">
+    <md-select-value class="md-select-value" id="select_value_label_0"><span>
+            <div class="md-text ng-binding">25</div>
+        </span><span class="md-select-icon" aria-hidden="true"></span></md-select-value>
+</md-select>

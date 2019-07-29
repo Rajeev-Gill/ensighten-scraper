@@ -21,7 +21,15 @@ const FILTER_OPTION = {
     bySpaces: document.getElementById("filterBySpaces")
 }
 const FILTER_INPUT = document.getElementById("searchSelect");
-const SEARCH_FILTER_TEXTBOX = document.getElementById("searchFilterCheckboxSPACE");
+const SEARCH_FILTER_TEXTBOX = document.getElementById("searchFilterCheckboxSPACE"); //Replace space with name of etm space (remove dashes and spaces from string 1st)
+const VISIBLE_NO_OF_TAGS = document.querySelectorAll(".label")[1].innerText.substring(4,6);
+const NO_OF_TAGS = document.querySelectorAll(".label")[1].innerText.substring(10,12);
+const CHANGE_NO_OF_TAGS_BTN = document.getElementById("select_1");
+const NO_OF_TAGS_SELECTORS = Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //O_OF_TAGS_SELECTORS[12] = Show 500 tags
+const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i] //Replace "i" with number to get tag
+
+
+//"1 - 25 of 60" 12 chars
 
 //Search strings
 const ENSIGHTEN_LOGIN = "https://manage.ensighten.com/login";
@@ -70,6 +78,14 @@ const SPACES = {
     d6: {
 
     }
+}
+
+//Functions
+const func = {
+
+}
+function getTags() {
+
 }
 
 //Main scraper
