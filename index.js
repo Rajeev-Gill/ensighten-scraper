@@ -1,5 +1,12 @@
 //Tutorial: https://medium.com/@e_mad_ehsan/getting-started-with-puppeteer-and-chrome-headless-for-web-scrapping-6bf5979dee3e
 
+/* Notes
+
+    _ID means its an id
+    _QS means its a class 
+
+*/
+
 //Import puppeteer library
 const puppeteer = require("puppeteer");
 
@@ -8,25 +15,29 @@ const CREDS = require("./creds");
 const CREDSD6 = require("./creds-d6");
 
 //DOM element selectors: Login
-const ACCOUNT_NAME_SELECTOR = document.getElementById("accountName");
-const USER_NAME_SELECTOR = document.getElementById("userName");
-const PASSWORD_SELECTOR = document.getElementById("password");
+const ACCOUNT_NAME_SELECTOR_ID = "accountName";
+const USER_NAME_SELECTOR_ID = "userName";
+const PASSWORD_SELECTOR_ID = "password";
 
 //DOM element selectors: Tags landing page
-const REMOVE_FILTERS_BTN = document.getElementById("removeFiltersBtn");
-const FILTERS_LIST = document.querySelector(".search-items");
-const TAG_TABLE = document.querySelector(".md-body");
-const FILTER_BTN = document.querySelector(".filter-color-icon");
-const FILTER_OPTION = {
-    bySpaces: document.getElementById("filterBySpaces")
+const REMOVE_FILTERS_BTN_ID = "removeFiltersBtn";
+const FILTERS_LIST_QS = ".search-items";
+const TAG_TABLE_QS = ".md-body";
+const FILTER_BTN_QS = ".filter-color-icon";
+const FILTER_OPTION_ID = {
+    bySpaces: "filterBySpaces"
 }
-const FILTER_INPUT = document.getElementById("searchSelect");
-const SEARCH_FILTER_TEXTBOX = document.getElementById("searchFilterCheckboxSPACE"); //Replace space with name of etm space (remove dashes and spaces from string 1st)
-const VISIBLE_NO_OF_TAGS = document.querySelectorAll(".label")[1].innerText.substring(4,6);
-const NO_OF_TAGS = document.querySelectorAll(".label")[1].innerText.substring(10,12);
+const FILTER_INPUT_ID = "searchSelect";
+const SEARCH_FILTER_TEXTBOX_SELECTOR = "searchFilterCheckboxSPACE"; //Replace space with name of etm space (remove dashes and spaces from string 1st)
+const LABEL = document.querySelectorAll(".label")[1].innerText;
+const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
+const ROWS_PER_PAGE = document.getElementById("select_value_label_0").firstElementChild.innerText
 const CHANGE_NO_OF_TAGS_BTN = document.getElementById("select_1");
 const NO_OF_TAGS_SELECTORS = Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
 const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to get tag
+const EDIT_TAG_BUTTON_SELECTOR = "deploymentsInlineEditBtnINDEX"; //Replace index with number
+
+//DOM element selectors: Single tag page
 
 
 //"1 - 25 of 60" 12 chars

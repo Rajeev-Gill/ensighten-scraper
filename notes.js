@@ -67,7 +67,14 @@ const TAG_TABLE = document.querySelector(".md-body");
 
 const TAG_AS_TABLE_ITEM = TAG_TABLE.children[0];
 
-let tags = [];
+let tags = [
+    {
+        prop: "info"
+    },
+    {
+        prop: "info2"
+    }
+];
 
 //Constructor function to "construct" each tag
 function Tag(tagName, space, lastAction, status){
@@ -99,3 +106,62 @@ const func = {
 
 func.scrapeTagAsTableItem(TAG_AS_TABLE_ITEM);
 
+/*
+
+Automate Ensighten login
+
+*/
+
+let acct = document.getElementById("accountName");
+let user = document.getElementById("userName");
+let pass = document.getElementById("password");
+
+
+/*
+
+Data structure example
+
+*/
+
+let tags = [
+    {
+        lastAction: "",
+
+    }
+]
+
+
+/*
+
+Show all tags if they are not visible
+
+*/
+const LABEL = document.querySelectorAll(".label")[1].innerText;
+const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
+const ROWS_PER_PAGE = document.getElementById("select_value_label_0").firstElementChild.innerText
+
+ if(ROWS_PER_PAGE < TOTAL_NO_OF_TAGS){
+    showAllTags();
+ }
+
+ /*
+ 
+FN to remove spaces and dashes from a string
+input:VW-NGW-Argentina-Media Tags
+output: VWNGWArgentinaMediaTags
+
+ */
+
+ const sanitisedStr = (input) => {
+    let strRemovedSpaces = input.replace(" ", "");
+    return strRemovedSpaces.replace(/-/g, "");
+ }
+
+
+ /*
+ 
+ sanitisedStr("VW-NGW-Argentina-Media Tags");
+ will return
+ "VWNGWArgentinaMediaTags"
+ 
+ */
