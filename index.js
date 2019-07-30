@@ -35,13 +35,12 @@ const LABEL_QSALL = ".label"; // [1].innerText;
 const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
 
 const ROWS_PER_PAGE = document.getElementById("select_value_label_0").firstElementChild.innerText
-const CHANGE_NO_OF_TAGS_BTN = document.getElementById("select_1");
+const CHANGE_NO_OF_TAGS_BTN_ID = "select_1";
 const NO_OF_TAGS_SELECTORS = Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
 const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to get tag
 const EDIT_TAG_BUTTON_SELECTOR = "deploymentsInlineEditBtnINDEX"; //Replace index with number
 
 //DOM element selectors: Single tag page
-
 
 //"1 - 25 of 60" 12 chars
 
