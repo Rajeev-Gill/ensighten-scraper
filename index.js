@@ -41,6 +41,17 @@ const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to ge
 const EDIT_TAG_BUTTON_SELECTOR = "deploymentsInlineEditBtnINDEX"; //Replace index with number
 
 //DOM element selectors: Single tag page
+const CUSTOM_JS_BTN_ID = "custom_code_btn";
+const CUSTOM_JS_BTN_2_ID = "gearIcon"; //.firstElementChild
+
+const STARTING_CODE_CONTAINER_QS = ".CodeMirror-code";
+const CUSTOM_CODE = ".CodeMirror-line";
+
+const CANCEL_CUSTOM_CODE_EDIT_ID = "cancelBtn";
+const BACK_BUTTON_CUSTOM_CODE_ID = "backButton";
+
+const DEPLOYMENT_STEP1_CONTINUE_ID = "deploymentEditStep1Continue"; ////.firstElementChild
+
 
 
 //"1 - 25 of 60" 12 chars

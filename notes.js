@@ -37,15 +37,73 @@ for(let i = 0; i < inputsFromIframe.length; i++){
 
 /*
 
+Scrape and store iframe content into an array
+
+*/
+
+let vendorSpecificTagSettings = [];
+function scrapeVendorSpecificTagSettings() {
+    //Get iframes
+    let iframes = Array.from(document.getElementsByTagName("iframe"));
+    //Get iframe with info
+    let iframeWithInfo = iframes[0]; //first iframe contains info
+    //Get inputs from iframe with info
+    let inputsFromIframe = Array.from(iframeWithInfo.contentDocument.getElementsByTagName("input"));
+
+    inputsFromIframe.forEach(function(e){
+        var input = new Object();
+        input.name = e.id;
+        input.content = e.value;
+        vendorSpecificTagSettings.push(input);
+    })
+}
+
+
+ /*
+ 
+Scrape the custom js code
+
+ */
+
+//Click gear icon
+
+
+function getCustomCode() {
+    //Initialise storage for custom js string
+    let customJS = "";
+    //Get lines of code
+    codeLines = document.querySelectorAll(".CodeMirror-line")
+    //Make Array
+    codeLinesArray = Array.from(codeLines)
+    //Make string from codeLineArray items
+    codeLinesArray.forEach(function (e) {
+        customJS += e.innerText;
+    })
+
+    return customJS;
+}
+
+let customCode = getCustomCode();
+
+/*
+
 Scrape Firing rules
 
 */
 
 //Get the div which contains firing rules
-var eventDiv = document.getElementsByClassName("selection-display-container")
+var eventDiv = document.getElementsByClassName("selection-display-container");
 
 //Get the content within the event div as a string
-var eventDivContent = eventDiv[0].innerHTML;
+var eventDivContent = eventDiv[0].children[1];
+
+var events = [];
+
+Array.from(eventDivContent.children).forEach(function(e){
+    events.push(e.innerText);
+})
+
+
 
 /* Returns:
 
@@ -152,11 +210,7 @@ output: VWNGWArgentinaMediaTags
 
  */
 
- const sanitisedStr = (input) => {
-    let strRemovedSpaces = input.replace(" ", "");
-    return strRemovedSpaces.replace(/-/g, "");
- }
-
+ const sanitisedStr = (input) => input.replace(" ", "").replace(/-/g, "")
 
  /*
  
@@ -165,3 +219,4 @@ output: VWNGWArgentinaMediaTags
  "VWNGWArgentinaMediaTags"
  
  */
+
