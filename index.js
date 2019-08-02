@@ -3,8 +3,8 @@
 /* Notes
 
     _ID means its an id
-    _QS means its a class
-    _QSALL means its a bunch of classes be ready to handle array
+    _CL means its a class
+    _CLALL means its a bunch of classes be ready to handle array
 
 */
 
@@ -22,21 +22,21 @@ const PASSWORD_SELECTOR_ID = "password";
 
 //DOM element selectors: Tags landing page
 const REMOVE_FILTERS_BTN_ID = "removeFiltersBtn";
-const FILTERS_LIST_QS = ".search-items";
-const TAG_TABLE_QS = ".md-body";
-const FILTER_BTN_QS = ".filter-color-icon";
+const FILTERS_LIST_CL = ".search-items";
+const TAG_TABLE_CL = ".md-body";
+const FILTER_BTN_CL = ".filter-color-icon";
 const FILTER_OPTION_ID = {
     bySpaces: "filterBySpaces"
 }
 const FILTER_INPUT_ID = "searchSelect";
 const SEARCH_FILTER_TEXTBOX_SELECTOR = "searchFilterCheckboxSPACE"; //Replace space with name of etm space (remove dashes and spaces from string 1st)
 
-const LABEL_QSALL = ".label"; // [1].innerText;
-const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
+const LABEL_CLALL = ".label"; // [1].innerText;
+//const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
 
-const ROWS_PER_PAGE = document.getElementById("select_value_label_0").firstElementChild.innerText
-const CHANGE_NO_OF_TAGS_BTN = document.getElementById("select_1");
-const NO_OF_TAGS_SELECTORS = Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
+const ROWS_PER_PAGE = "select_value_label_0"; //document.getElementById("select_value_label_0").firstElementChild.innerText
+const CHANGE_NO_OF_TAGS_BTN_ID = "select_1";
+const NO_OF_TAGS_SELECTORS = "select_container_2";//Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
 const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to get tag
 const EDIT_TAG_BUTTON_SELECTOR = "deploymentsInlineEditBtnINDEX"; //Replace index with number
 
@@ -51,7 +51,6 @@ const CANCEL_CUSTOM_CODE_EDIT_ID = "cancelBtn";
 const BACK_BUTTON_CUSTOM_CODE_ID = "backButton";
 
 const DEPLOYMENT_STEP1_CONTINUE_ID = "deploymentEditStep1Continue"; ////.firstElementChild
-
 
 
 //"1 - 25 of 60" 12 chars
