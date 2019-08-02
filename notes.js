@@ -1,43 +1,34 @@
-/*
 
-1. Scrape tag name
 
-*/
+ /*
+ 
+Scrape the custom js code
 
-//Grab all inputs from page
-//[0] is tag name
-let inputs = Array.from(document.getElementsByTagName("input"));
+ */
 
-/*
-
-1. Scrape vendor specific tag settings
-
-*/
-
-//Get iframes
-let iframes = Array.from(document.getElementsByTagName("iframe"));
-//Get iframe with info
-let iframeWithInfo = iframes[0]; //first iframe contains info
-
-//Get inputs from iframe with info
-let inputsFromIframe = Array.from(iframeWithInfo.contentDocument.getElementsByTagName("input"));
-
-//Log all inputs
-for(let i = 0; i < inputsFromIframe.length; i++){
-    console.log(inputsFromIframe[i]);
-}
-
-//Log all input values and IDs with label
-for(let i = 0; i < inputsFromIframe.length; i++){
-    console.log(`
-    Input Value: ${inputsFromIframe[i].value},
-    Input Id: ${inputsFromIframe[i].id}
-    `);
+//Click gear icon
+let customCode;
+function getCustomCode() {
+    //Get iframes
+    let iframes = Array.from(document.getElementsByTagName("iframe"));
+    //Get iframe with info
+    let iframeWithInfo = iframes[0]; //first iframe contains info
+    //Get code lines from iframe
+    let codeFromIframe = Array.from(iframeWithInfo.contentDocument.querySelectorAll(".CodeMirror-lines"));
+    //initialise var for custom code string
+    let code = "";
+    let code2 = "";
+    //extract code from array into string
+    codeFromIframe.forEach(function(e){
+        code += e.innerText.replace("1if","");
+        code2 += e.textContent;
+    });
+    customCode = code;
 }
 
 /*
 
-Scrape and store iframe content into an array
+Scrape vendor specific tag settings
 
 */
 
@@ -57,33 +48,6 @@ function scrapeVendorSpecificTagSettings() {
         vendorSpecificTagSettings.push(input);
     })
 }
-
-
- /*
- 
-Scrape the custom js code
-
- */
-
-//Click gear icon
-
-
-function getCustomCode() {
-    //Initialise storage for custom js string
-    let customJS = "";
-    //Get lines of code
-    codeLines = document.querySelectorAll(".CodeMirror-line")
-    //Make Array
-    codeLinesArray = Array.from(codeLines)
-    //Make string from codeLineArray items
-    codeLinesArray.forEach(function (e) {
-        customJS += e.innerText;
-    })
-
-    return customJS;
-}
-
-let customCode = getCustomCode();
 
 /*
 
@@ -210,7 +174,7 @@ output: VWNGWArgentinaMediaTags
 
  */
 
- const sanitisedStr = (input) => input.replace(" ", "").replace(/-/g, "")
+ const sanitisedStr = (input) => input.replace(" ", "").replace(/-/g, "");
 
  /*
  
@@ -219,4 +183,43 @@ output: VWNGWArgentinaMediaTags
  "VWNGWArgentinaMediaTags"
  
  */
+///////////
+///////////SPARE CODE BELOW
+///////////
+///////////
+/*
 
+1. Scrape tag name
+
+*/
+
+//Grab all inputs from page
+//[0] is tag name
+let inputs = Array.from(document.getElementsByTagName("input"));
+
+/*
+
+1. Scrape vendor specific tag settings
+
+*/
+
+//Get iframes
+let iframes = Array.from(document.getElementsByTagName("iframe"));
+//Get iframe with info
+let iframeWithInfo = iframes[0]; //first iframe contains info
+
+//Get inputs from iframe with info
+let inputsFromIframe = Array.from(iframeWithInfo.contentDocument.getElementsByTagName("input"));
+
+//Log all inputs
+for(let i = 0; i < inputsFromIframe.length; i++){
+    console.log(inputsFromIframe[i]);
+}
+
+//Log all input values and IDs with label
+for(let i = 0; i < inputsFromIframe.length; i++){
+    console.log(`
+    Input Value: ${inputsFromIframe[i].value},
+    Input Id: ${inputsFromIframe[i].id}
+    `);
+}

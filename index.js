@@ -16,41 +16,43 @@ const CREDS = require("./creds");
 const CREDSD6 = require("./creds-d6");
 
 //DOM element selectors: Login
-const ACCOUNT_NAME_SELECTOR_ID = "accountName";
-const USER_NAME_SELECTOR_ID = "userName";
-const PASSWORD_SELECTOR_ID = "password";
+const ACCOUNT_NAME_SELECTOR_ID = "#accountName";
+const USER_NAME_SELECTOR_ID = "#userName";
+const PASSWORD_SELECTOR_ID = "#password";
+
+const LOGIN_CL = ".btn-login";
 
 //DOM element selectors: Tags landing page
-const REMOVE_FILTERS_BTN_ID = "removeFiltersBtn";
+const REMOVE_FILTERS_BTN_ID = "#removeFiltersBtn";
 const FILTERS_LIST_CL = ".search-items";
 const TAG_TABLE_CL = ".md-body";
 const FILTER_BTN_CL = ".filter-color-icon";
 const FILTER_OPTION_ID = {
-    bySpaces: "filterBySpaces"
+    bySpaces: "#filterBySpaces"
 }
-const FILTER_INPUT_ID = "searchSelect";
+const FILTER_INPUT_ID = "#searchSelect";
 const SEARCH_FILTER_TEXTBOX_SELECTOR = "searchFilterCheckboxSPACE"; //Replace space with name of etm space (remove dashes and spaces from string 1st)
 
 const LABEL_CLALL = ".label"; // [1].innerText;
 //const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
 
 const ROWS_PER_PAGE = "select_value_label_0"; //document.getElementById("select_value_label_0").firstElementChild.innerText
-const CHANGE_NO_OF_TAGS_BTN_ID = "select_1";
-const NO_OF_TAGS_SELECTORS = "select_container_2";//Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
-const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to get tag
+const CHANGE_NO_OF_TAGS_BTN_ID = "#select_1";
+const NO_OF_TAGS_SELECTORS_ID = "#select_container_2";//Array.from(document.getElementById("select_container_2").firstChild.firstChild.childNodes); //NO_OF_TAGS_SELECTORS[12] = Show 500 tags
+//const TAG_AS_TABLE_ITEM = TAG_TABLE.children[i]; //Replace "i" with number to get tag
 const EDIT_TAG_BUTTON_SELECTOR = "deploymentsInlineEditBtnINDEX"; //Replace index with number
 
 //DOM element selectors: Single tag page
-const CUSTOM_JS_BTN_ID = "custom_code_btn";
-const CUSTOM_JS_BTN_2_ID = "gearIcon"; //.firstElementChild
+const CUSTOM_JS_BTN_ID = "#custom_code_btn";
+const CUSTOM_JS_BTN_2_ID = "#gearIcon"; //.firstElementChild
 
 const STARTING_CODE_CONTAINER_QS = ".CodeMirror-code";
 const CUSTOM_CODE = ".CodeMirror-line";
 
-const CANCEL_CUSTOM_CODE_EDIT_ID = "cancelBtn";
-const BACK_BUTTON_CUSTOM_CODE_ID = "backButton";
+const CANCEL_CUSTOM_CODE_EDIT_ID = "#cancelBtn";
+const BACK_BUTTON_CUSTOM_CODE_ID = "#backButton";
 
-const DEPLOYMENT_STEP1_CONTINUE_ID = "deploymentEditStep1Continue"; ////.firstElementChild
+const DEPLOYMENT_STEP1_CONTINUE_ID = "#deploymentEditStep1Continue"; ////.firstElementChild
 
 
 //"1 - 25 of 60" 12 chars
@@ -125,13 +127,18 @@ const func = {
        //Construct a tag object with info from TAG_AS_TABLE_ITEM[i]
        let newTag = new Tag(tagName, space, lastAction, status)
        tags.push(newTag);
+    },
+    sanitisedStr: (input) => {
+        return input.replace(" ", "").replace(/-/g, "");
     }
 }
+
+//const sanitisedStr = (input) => 
 
 //func.scrapeTagAsTableItem(TAG_AS_TABLE_ITEM[i]);
 
 //Main scraper
-async function runScraper() {
+async function runScraper(account, etmSpace) {
     //Open a non-headless browser
     const browser = await puppeteer.launch({
         headless: false
@@ -139,4 +146,51 @@ async function runScraper() {
 
     //Add new page to the browser
     const page = await browser.newPage();
+
+    //Go to Ensighten login
+    await page.goto("https://manage.ensighten.com/login");
+
+    //Log in to Ensighten
+    await page.click(ACCOUNT_NAME_SELECTOR_ID);
+
+    //If account is D6 type D6 creds, if not type D5 creds
+    if(account === "d6" || account === "D6"){
+        await page.keyboard.type(CREDSD6.account);
+    } else {
+        await page.keyboard.type(CREDS.account);
+    }
+
+    await page.click(USER_NAME_SELECTOR_ID);
+    await page.keyboard.type(CREDS.username);
+    
+    await page.click(PASSWORD_SELECTOR_ID);
+    await page.keyboard.type(CREDS.password);
+
+    await page.click(LOGIN_CL);
+
+    //Once logged in navigate to tags page
+    await page.goto("https://manage.ensighten.com/tags");
+
+    //Refresh page to squash bug
+    await page.reload()
+
+    //Wait just to be safe
+    await page.waitForNavigation();
+
+    //Remove filters if they are active
+    if(await page.evaluate(() => {document.querySelector(".search-items")}) != null) {
+        await page.click(REMOVE_FILTERS_BTN_ID);
+    }
+
+    //await page.waitForNavigation();
+    await page.waitForSelector(FILTER_INPUT_ID);
+
+    //Enable relevant filter
+    await page.click(FILTER_INPUT_ID);
+    await page.keyboard.type(etmSpace);
+    await page.click(SEARCH_FILTER_TEXTBOX_SELECTOR.replace("SPACE", func.sanitisedStr(etmSpace)))
+    
+
 }
+
+runScraper("D5", "VW-NGW-France-Media Tags");
