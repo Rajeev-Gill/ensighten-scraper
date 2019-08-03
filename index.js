@@ -31,7 +31,7 @@ const FILTER_OPTION_ID = {
     bySpaces: "#filterBySpaces"
 }
 const FILTER_INPUT_ID = "#searchSelect";
-const SEARCH_FILTER_TEXTBOX_SELECTOR = "searchFilterCheckboxSPACE"; //Replace space with name of etm space (remove dashes and spaces from string 1st)
+const SEARCH_FILTER_TEXTBOX_SELECTOR = "#searchFilterCheckboxSPACE"; //Replace space with name of etm space (remove dashes and spaces from string 1st)
 
 const LABEL_CLALL = ".label"; // [1].innerText;
 //const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
@@ -53,9 +53,6 @@ const CANCEL_CUSTOM_CODE_EDIT_ID = "#cancelBtn";
 const BACK_BUTTON_CUSTOM_CODE_ID = "#backButton";
 
 const DEPLOYMENT_STEP1_CONTINUE_ID = "#deploymentEditStep1Continue"; ////.firstElementChild
-
-
-//"1 - 25 of 60" 12 chars
 
 //Search strings
 const ENSIGHTEN_LOGIN = "https://manage.ensighten.com/login";
@@ -171,26 +168,63 @@ async function runScraper(account, etmSpace) {
     //Once logged in navigate to tags page
     await page.goto("https://manage.ensighten.com/tags");
 
-    //Refresh page to squash bug
-    await page.reload()
-
-    //Wait just to be safe
-    await page.waitForNavigation();
-
-    //Remove filters if they are active
-    if(await page.evaluate(() => {document.querySelector(".search-items")}) != null) {
-        await page.click(REMOVE_FILTERS_BTN_ID);
-    }
-
-    //await page.waitForNavigation();
-    await page.waitForSelector(FILTER_INPUT_ID);
-
+    //Wait until page is loaded big up github on this one: https://github.com/GoogleChrome/puppeteer/issues/3338
+    await Promise.all([page.goto("https://manage.ensighten.com/tags"), page.waitForNavigation({waitUntil: "networkidle0"})]);
+    console.log("Tags page loaded");
+   
     //Enable relevant filter
+    await page.click("#filtersSearchTypeBtn");
+    await page.click("#filterBySpaces");
     await page.click(FILTER_INPUT_ID);
     await page.keyboard.type(etmSpace);
-    await page.click(SEARCH_FILTER_TEXTBOX_SELECTOR.replace("SPACE", func.sanitisedStr(etmSpace)))
+    await page.click(SEARCH_FILTER_TEXTBOX_SELECTOR.replace("SPACE", func.sanitisedStr(etmSpace)));
     
+    //Reload page to avoid prematurely scraping the dom
+    await Promise.all([page.goto("https://manage.ensighten.com/tags"), page.waitForNavigation({waitUntil: "networkidle0"})]);
+    console.log("Tags page re-loaded - ${etmSpace} space set");
+
+    //Get no. of tags and no. of rows
+    const LABEL = await page.evaluate((selector) => {
+        return document.querySelectorAll(selector)[1].innerText
+    }, LABEL_CLALL)
+
+    //Get total no. of tags
+    const TOTAL_NO_OF_TAGS = LABEL.slice(-(LABEL.length - (LABEL.indexOf("f") + 2)));
+
+    //Get no. of visible of tags
+    const ROWS = await page.evaluate((selector) => {
+         return document.getElementById(selector).firstElementChild.innerText;
+     }, ROWS_PER_PAGE)
+
+    console.log(`
+    Label: ${LABEL},
+    Tags : ${TOTAL_NO_OF_TAGS},
+    Rows: ${ROWS}
+    `);
+
+    //If the total number of tags is higher than the amount visible
+    if(TOTAL_NO_OF_TAGS > ROWS){
+        //Change number of visible rows per page
+        await page.click(CHANGE_NO_OF_TAGS_BTN_ID);
+
+        //Else if statement to decide how many tags to show
+        if(TOTAL_NO_OF_TAGS > 10 && TOTAL_NO_OF_TAGS < 25){
+            await page.click("#select_option_4");
+        } else if (TOTAL_NO_OF_TAGS > 25 && TOTAL_NO_OF_TAGS < 50) {
+            await page.click("#select_option_5");
+        } else if (TOTAL_NO_OF_TAGS > 50 && TOTAL_NO_OF_TAGS < 100) {
+            await page.click("#select_option_6");
+        } else if (TOTAL_NO_OF_TAGS > 100 && TOTAL_NO_OF_TAGS < 250){
+            await page.click("#select_option_7");
+        } else if (TOTAL_NO_OF_TAGS > 250 && TOTAL_NO_OF_TAGS < 500){
+            await page.click("#select_option_8");
+        }
+    }
+
+    //Reload page again just to be safe
+    await Promise.all([page.goto("https://manage.ensighten.com/tags"), page.waitForNavigation({waitUntil: "networkidle0"})]);
+    console.log(`Tags page re-loaded - all ${TOTAL_NO_OF_TAGS} tags visible`);
 
 }
 
-runScraper("D5", "VW-NGW-France-Media Tags");
+runScraper("D5", "VW-NGW-Argentina-Media Tags");
