@@ -223,3 +223,28 @@ for(let i = 0; i < inputsFromIframe.length; i++){
     Input Id: ${inputsFromIframe[i].id}
     `);
 }
+
+/*
+
+Scrape Tag as Table Items
+
+*/
+
+//Object to house private functions
+const func = {
+    //Gets tag info from TAG_AS_TABLE_ITEM and parses it into tags array
+    scrapeTagAsTableItem: (TagAsTableItem) => { //Pass in TAG_AS_TABLE_ITEM[i]
+        let tagContentArray = Array.from(TagAsTableItem.children);
+        let tagName = tagContentArray[2].innerText;
+        let space = tagContentArray[3].innerText;
+        let lastAction = `As of ${new Date()} the last action was ${tagContentArray[4].innerText}`;
+        let status = tagContentArray[6].innerText;
+
+       //Construct a tag object with info from TAG_AS_TABLE_ITEM[i]
+       let newTag = new Tag(tagName, space, lastAction, status)
+       tags.push(newTag);
+    },
+    sanitisedStr: (input) => {
+        return input.replace(" ", "").replace(/-/g, "");
+    }
+}

@@ -114,7 +114,7 @@ function Tag(tagName, space, lastAction, status){
 //Object to house private functions
 const func = {
     //Gets tag info from TAG_AS_TABLE_ITEM and parses it into tags array
-    scrapeTagAsTableItem: (TagAsTableItem, callback) => { //Pass in TAG_AS_TABLE_ITEM[i]
+    scrapeTagAsTableItem: (TagAsTableItem) => { //Pass in TAG_AS_TABLE_ITEM[i]
         let tagContentArray = Array.from(TagAsTableItem.children);
         let tagName = tagContentArray[2].innerText;
         let space = tagContentArray[3].innerText;
@@ -225,6 +225,25 @@ async function runScraper(account, etmSpace) {
     await Promise.all([page.goto("https://manage.ensighten.com/tags"), page.waitForNavigation({waitUntil: "networkidle0"})]);
     console.log(`Tags page re-loaded - all ${TOTAL_NO_OF_TAGS} tags visible`);
 
+    let TAG_AS_TABLE_ITEMS = await page.evaluate((selector) => {
+        let table = document.querySelector(selector);
+        let tableArray = Array.from(table.childNodes);
+        //SCRAP ALL THIS AND USE CODE FROM scrapeTagAsTableItem
+        //DONT THINK U CAN EXTRACT ENTIRE ARRAYS FROM PAGE
+        //https://stackoverflow.com/questions/55017057/puppeteer-returning-empty-object
+        tableArray.forEach((e) => {
+            func.scrapeTagAsTableItem(e)
+        });
+    }, ".md-table");
+
+    console.log(TAG_AS_TABLE_ITEMS);
+
+
+    // TAG_AS_TABLE_ITEMS.forEach((e) => {
+    //     func.scrapeTagAsTableItem(e);
+    // });
+
+    //console.log(tags.tagName, tags.space, tags.lastAction, tags.status);
 }
 
 runScraper("D5", "VW-NGW-Argentina-Media Tags");
