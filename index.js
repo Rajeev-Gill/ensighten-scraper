@@ -139,13 +139,19 @@ async function runScraper(account, etmSpace) {
     //Open a non-headless browser
     const browser = await puppeteer.launch({
         headless: false
+        //Maybe add a custom executablePath property when running on windows environments
     });
 
     //Add new page to the browser
     const page = await browser.newPage();
 
-    //Go to Ensighten login
-    await page.goto("https://manage.ensighten.com/login");
+    try {
+        //Go to Ensighten login
+        await page.goto("https://manage.ensighten.com/login");
+    } catch (error) {
+        console.log(error)
+        browser.close();
+    }
 
     //Log in to Ensighten
     await page.click(ACCOUNT_NAME_SELECTOR_ID);
